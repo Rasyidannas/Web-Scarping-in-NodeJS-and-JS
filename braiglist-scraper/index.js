@@ -23,20 +23,17 @@ async function scrapeJobsFromIndexPages() {
 }
 
 async function scrapeJobDescriptions(allJobs) {
-  const allJobsWithDescriptionsPromises = allJobs.map(async (job) => {
+  let allJobsWithDescriptions = [];
+  for (const job of allJobs) {
     const jobDescriptionPage = await axios.get(
       "https://braigslist.vercel.app/" + job.url
     );
+    console.log("Request fired" + job.url);
     const $ = cheerio.load(jobDescriptionPage.data);
     const description = $("div").text();
-    console.log(description);
     job.description = description;
-    return job;
-  });
-  const allJobsDescriptions = await Promise.all(
-    allJobsWithDescriptionsPromises
-  );
-  console.log(allJobsDescriptions);
+    allJobsWithDescriptions.push(job);
+  }
 }
 
 async function main() {
