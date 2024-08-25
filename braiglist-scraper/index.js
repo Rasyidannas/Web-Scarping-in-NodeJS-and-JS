@@ -1,7 +1,7 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
 
-async function main() {
+async function scrapeJobsFromIndexPages() {
   const allJobs = [];
   for (let i = 1; i < 14; i++) {
     const jobIndexPage = await axios.get(
@@ -18,7 +18,24 @@ async function main() {
       .get();
     allJobs.push(...jobs);
   }
-  console.log(allJobs.length);
+  //   console.log(allJobs.length);
+  return allJobs;
+}
+
+async function scrapeJobDescriptions(allJobs) {
+  allJobs.map(async (job) => {
+    const jobDescriptionPage = await axios.get(
+      "https://braigslist.vercel.app/" + job.url
+    );
+    const $ = cheerio.load(jobDescriptionPage.data);
+    const description = $("div").text();
+    console.log(description);
+  });
+}
+
+async function main() {
+  const allJobs = await scrapeJobsFromIndexPages();
+  scrapeJobDescriptions(allJobs);
 }
 
 main();
