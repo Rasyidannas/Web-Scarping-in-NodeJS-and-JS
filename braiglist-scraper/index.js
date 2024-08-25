@@ -1,13 +1,16 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
 
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 async function scrapeJobsFromIndexPages() {
   const allJobs = [];
   for (let i = 1; i < 14; i++) {
     const jobIndexPage = await axios.get(
       `https://braigslist.vercel.app/jobs/${i}/`
     );
-    // console.log(jobIndexPage.data);
+    console.log("Request fired: " + i);
+    await sleep(1000);
     const $ = cheerio.load(jobIndexPage.data);
     const jobs = $(".title-blob > a")
       .map((index, element) => {
@@ -28,7 +31,8 @@ async function scrapeJobDescriptions(allJobs) {
     const jobDescriptionPage = await axios.get(
       "https://braigslist.vercel.app/" + job.url
     );
-    console.log("Request fired" + job.url);
+    console.log("Request fired: " + job.url);
+    await sleep(1000);
     const $ = cheerio.load(jobDescriptionPage.data);
     const description = $("div").text();
     job.description = description;
