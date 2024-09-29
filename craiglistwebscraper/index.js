@@ -1,4 +1,5 @@
 const puppeteer = require("puppeteer");
+const cheerio = require("cheerio");
 
 const scrappingResults = [
   {
@@ -19,7 +20,11 @@ async function main() {
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
   const page = await browser.newPage();
-  await page.goto("https://www.google.com/");
+  await page.goto("https://sfbay.craigslist.org/search/sof#search=1~thumb~0~0");
+
+  const html = await page.content();
+  const $ = cheerio.load(html);
+  $(".posting-title").each((index, element) => console.log($(element).text())); // this still not render in terminal
 }
 
 main();
