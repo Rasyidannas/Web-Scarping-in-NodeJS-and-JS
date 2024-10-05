@@ -24,10 +24,16 @@ async function main() {
 
   const html = await page.content();
   const $ = cheerio.load(html);
-  $(".posting-title").each((index, element) => console.log($(element).text())); // this still not render in terminal
-  $(".posting-title").each((index, element) => {
-    console.log($(element).attr("href"));
-  });
+
+  const results = $(".posting-title")
+    .map((index, element) => {
+      const title = $(element).text();
+      const url = $(element).attr("href");
+      return { title, url };
+    })
+    .get();
+
+  console.log(results);
 }
 
 main();
