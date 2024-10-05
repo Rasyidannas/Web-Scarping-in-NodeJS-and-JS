@@ -25,6 +25,9 @@ async function main() {
   const html = await page.content();
   const $ = cheerio.load(html);
   $(".posting-title").each((index, element) => console.log($(element).text())); // this still not render in terminal
+  $(".posting-title").each((index, element) => {
+    console.log($(element).attr("href"));
+  });
 }
 
 main();
