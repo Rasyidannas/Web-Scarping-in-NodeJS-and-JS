@@ -25,11 +25,14 @@ async function main() {
   const html = await page.content();
   const $ = cheerio.load(html);
 
-  const results = $(".posting-title")
+  const results = $(".result-info")
     .map((index, element) => {
-      const title = $(element).text();
-      const url = $(element).attr("href");
-      return { title, url };
+      const titleElement = $(element).find(".posting-title");
+      const timeElement = $(element).find(".timeago");
+      const title = $(titleElement).text();
+      const url = $(titleElement).attr("href");
+      const datePosted = new Date($(timeElement).attr("title"));
+      return { title, url, datePosted };
     })
     .get();
 
