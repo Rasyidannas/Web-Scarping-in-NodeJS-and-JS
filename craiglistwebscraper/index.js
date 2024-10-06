@@ -28,11 +28,13 @@ async function main() {
   const results = $(".result-info")
     .map((index, element) => {
       const titleElement = $(element).find(".posting-title");
-      const timeElement = $(element).find(".timeago");
+      const timeElement = $(element).find(".meta span[title]");
+      const hoodElement = $(element).find(".supertitle");
       const title = $(titleElement).text();
       const url = $(titleElement).attr("href");
       const datePosted = new Date($(timeElement).attr("title"));
-      return { title, url, datePosted };
+      const hood = $(hoodElement).text();
+      return { title, url, datePosted, hood };
     })
     .get();
 
