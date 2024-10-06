@@ -40,7 +40,12 @@ async function scrapeJobDescription(listings, page) {
   for (var i = 0; i < listings.length; i++) {
     await page.goto(listings[i].url);
     const html = await page.content();
+    await sleep(1000);
   }
+}
+
+async function sleep(milliseconds) {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
 
 async function main() {
