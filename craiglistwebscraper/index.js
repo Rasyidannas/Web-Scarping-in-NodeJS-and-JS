@@ -14,18 +14,13 @@ const scrappingResults = [
   },
 ];
 
-async function main() {
-  const browser = await puppeteer.launch({
-    headless: false,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  });
-  const page = await browser.newPage();
+async function scrapeListings(page) {
   await page.goto("https://sfbay.craigslist.org/search/sof#search=1~thumb~0~0");
 
   const html = await page.content();
   const $ = cheerio.load(html);
 
-  const results = $(".result-info")
+  const listings = $(".result-info")
     .map((index, element) => {
       const titleElement = $(element).find(".posting-title");
       const timeElement = $(element).find(".meta span[title]");
@@ -38,7 +33,25 @@ async function main() {
     })
     .get();
 
-  console.log(results);
+  return listings;
+}
+
+async function scrapeJobDescription(listings, page) {
+  for (var i = 0; i < listings.length; i++) {
+    await page.goto(listings[i].url);
+    const html = await page.content();
+  }
+}
+
+async function main() {
+  const browser = await puppeteer.launch({
+    headless: false,
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  });
+  const page = await browser.newPage();
+  const listings = await scrapeListings(page);
+  const listingsWithJobDescription = await scrapeJobDescription(listings, page);
+  console.log(listings);
 }
 
 main();
