@@ -7,7 +7,8 @@ exports.listings = (html) => {
       const titleElement = $(element).find(".title");
       const title = titleElement.text();
       const url = $(element).find("a").attr("href");
-      return { title, url };
+      const hood = $(element).find(".location").text().trim();
+      return { title, url, hood };
     })
     .get();
 };
