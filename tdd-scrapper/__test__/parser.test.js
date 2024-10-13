@@ -9,7 +9,7 @@ beforeAll(() => {
 });
 
 it("should give the correct number of listings", () => {
-  expect(listings.length).toBe(120);
+  expect(listings.length).toBe(352);
 });
 
 it("should get hood from listing", () => {
@@ -29,5 +29,7 @@ it("should get correct url", () => {
 });
 
 it("should get correct title", () => {
-  expect(listings[0]).toEqual("Excellent Piano Teacher--Teaching Online");
+  expect(listings[0].title).toEqual(
+    "Excellent Piano Teacher--Teaching Online!"
+  );
 });

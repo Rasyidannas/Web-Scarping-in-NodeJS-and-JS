@@ -1,3 +1,11 @@
 const cheerio = require("cheerio");
 
-exports.add = (number1, number2) => number1 + number2;
+exports.listings = (html) => {
+  const $ = cheerio.load(html);
+  return $(".cl-static-search-result")
+    .map((index, element) => {
+      const title = $(element).find(".title").text();
+      return { title };
+    })
+    .get();
+};
