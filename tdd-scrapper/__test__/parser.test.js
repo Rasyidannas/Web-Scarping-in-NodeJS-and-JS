@@ -21,15 +21,11 @@ it("should get correct date from listing", () => {
 });
 
 it("should get correct url", () => {
-  expect(
-    listings[0].url(
-      "https://sfbay.craigslist.org/eby/muc/d/berkeley-excellent-piano-teacher/7787196212.html"
-    )
+  expect(listings[0].url).toBe(
+    "https://sfbay.craigslist.org/eby/muc/d/berkeley-excellent-piano-teacher/7787196212.html"
   );
 });
 
 it("should get correct title", () => {
-  expect(listings[0].title).toEqual(
-    "Excellent Piano Teacher--Teaching Online!"
-  );
+  expect(listings[0].title).toBe("Excellent Piano Teacher--Teaching Online!");
 });
