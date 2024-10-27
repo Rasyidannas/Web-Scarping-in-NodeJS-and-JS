@@ -1,24 +1,20 @@
-var robotsParser = require("robots-parser");
+const robotsParser = require("robots-parser");
+const request = require("request-promise");
 
-var robots = robotsParser(
-  "http://www.example.com/robots.txt",
-  [
-    "User-agent: *",
-    "Disallow: /dir/",
-    "Disallow: /test.html",
-    "Allow: /dir/test.html",
-    "Allow: /test.html",
-    "Crawl-delay: 1",
-    "Sitemap: http://example.com/sitemap.xml",
-    "Host: example.com",
-  ].join("\n")
-);
+const robotsUrl = "https://textfiles.meulie.net/robots.txt";
 
-console.log(
-  robots.isAllowed("http://www.example.com/test.html", "Sams-Bot/1.0")
-); // true
-robots.isAllowed("http://www.example.com/dir/test.html", "Sams-Bot/1.0"); // true
-robots.isDisallowed("http://www.example.com/dir/test2.html", "Sams-Bot/1.0"); // true
-robots.getCrawlDelay("Sams-Bot/1.0"); // 1
-robots.getSitemaps(); // ['http://example.com/sitemap.xml']
-// robots.getPreferredHost(); // example.com
+async function getRobotsTxt(robotsUrl) {
+  const robotTxt = await request.get(robotsUrl);
+  const robots = robotsParser(robotsUrl, robotTxt);
+  console.log(
+    robots.isAllowed("https://textfiles.meulie.net/100/", "rasydannas")
+  );
+
+  console.log(
+    robots.isAllowed("https://textfiles.meulie.net/100/", "rogerbot")
+  );
+
+  console.log(robots.getCrawlDelay());
+}
+
+getRobotsTxt(robotsUrl);
