@@ -1,4 +1,5 @@
 const request = require("request-promise").defaults({ jar: true });
+const fs = require("fs");
 
 async function main() {
   const result = await request.get("https://internshala.com/");
@@ -11,6 +12,15 @@ async function main() {
       },
     }
   );
+
+  fs.writeFileSync("result.html", result);
 }
 
-main();
+(async () => {
+  try {
+    const result = await main();
+    console.log(result);
+  } catch (error) {
+    console.error("Error:", error);
+  }
+})();
